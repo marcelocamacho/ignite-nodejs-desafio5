@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  database_ignite_desafio5:
+    image: postgres
+    container_name: database_ignite_desafio5
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=queries_challenge
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: ignite_nodejs_desafio5
+    links:
+      - database_ignite_desafio5
+    depends_on:
+      - database_ignite_desafio5
+    ports: 
+      - 3333:3333
+      - 9229:9229
+    volumes:
+      - .:/usr/app
+
+volumes:
+  pgdata:
+    driver: local
+# docker-compose up --force-recreate -d
+# docker logs rentalx -f
